@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='pymanifest',
-    version='1.0',
+    version='1.1',
     packages=['pymanifest'],
     author="Clay Brooks",
     author_email="clay_brooks@outlook.com",

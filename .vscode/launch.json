@@ -1,0 +1,24 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Recurse *.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/test.py",
+            "args": ["--recurse-so-directory", ".", "--so-pattern", "*.py"],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: -h",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/test.py",
+            "args": ["-h"],
+            "console": "integratedTerminal"
+        }
+    ]
+}
