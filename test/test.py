@@ -55,21 +55,21 @@ class TestPyManifest(unittest.TestCase):
 
         for folder in folders:
             if not os.path.isdir(folder):
-                logging.error(f"Incorrect test setup! Missing folder {folder}")
+                logging.error("Incorrect test setup! Missing folder {}".format(folder))
                 sys.exit(1)
 
         for file in files:
             if not os.path.isfile(file):
-                logging.error(f"Incorrect test setup! Missing file {file}")
+                logging.error("Incorrect test setup! Missing file {}".format(file))
                 sys.exit(1)
 
         for folder in fail_folders:
             if os.path.isdir(folder):
-                logging.error(f"Incorrect test setup!  Folder should be non-existent {folder}")
+                logging.error("Incorrect test setup!  Folder should be non-existent {}".format(folder))
 
         for file in fail_files:
             if os.path.isfile(file):
-                logging.error(f"Incorrect test setup!  File should be non-existent {file}")
+                logging.error("Incorrect test setup!  File should be non-existent {}".format(file))
 
 
     def tearDown(self):
