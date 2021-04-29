@@ -5,20 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Recurse *.py",
+            "name": "Python: Test",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/test.py",
-            "args": ["--recurse-so-directory", ".", "--so-pattern", "*.py"],
-            "console": "integratedTerminal"
-        },
-        {
-            "name": "Python: -h",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}/test.py",
-            "args": ["-h"],
-            "console": "integratedTerminal"
+            "program": "${workspaceFolder}/test/test.py",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}"
+            }
         }
     ]
 }

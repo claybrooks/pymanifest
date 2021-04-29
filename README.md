@@ -10,11 +10,10 @@ filters.
 * Pip
 
 
-## Install & Run
+## Install
 
 ```
 pip install pymanifest
-python -m pymanifest --directory /path/to/include --ignore-directory /path/to/exclude --file /path/to/single/file
 ```
 
 ## Examples

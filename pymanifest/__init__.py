@@ -5,12 +5,18 @@ import logging
 
 
 class ArgSet:
-    def __init__(self, files, directories, recurse_directories, manifests, patterns):
-        self.files = files
-        self.directories = directories
-        self.recurse_directories = recurse_directories
-        self.manifests = manifests
-        self.patterns = patterns
+    def __init__(
+        self, files:set[str],
+        directories:set[str],
+        recurse_directories:set[str],
+        manifests:set[str],
+        patterns:set[str]
+    ):
+        self.files:set[str] = files
+        self.directories:set[str] = directories
+        self.recurse_directories:set[str] = recurse_directories
+        self.manifests:set[str] = manifests
+        self.patterns:set[str] = patterns
 
 
 DEFAULT_ARG_MAP = {
@@ -25,6 +31,7 @@ DEFAULT_ARG_MAP = {
     '--pattern'                     : '--pattern',
     '--exclude-pattern'             : '--exclude-pattern',
 }
+
 
 def __mimic_ap_rename(arg:str):
     if arg.startswith('--'):
@@ -109,19 +116,20 @@ def add_args(ap: argparse.ArgumentParser, arg_map:dict[str, dict[str,str]]=None)
 
 
 def __process_file(path:str, out:set[str], err:set[str]):
-    out.add(path) if os.path.isfile(path) else err.append(path)
+    path = os.path.realpath(path)
+    out.add(path) if os.path.isfile(path) else err.add(path)
 
 
 def __process_directory(path:str, out:set[str], err:set[str]):
     path = os.path.realpath(path)
-    out.update([os.path.join(path, x) for x in next(os.walk(path))[2]]) if os.path.isdir(path) else err.append(path)
+    out.update([os.path.join(path, x) for x in next(os.walk(path))[2]]) if os.path.isdir(path) else err.add(path)
 
 
 def __process_recurse_directory(path:str, out:set[str], err:set[str]):
     path = os.path.realpath(path)
 
     if not os.path.isdir(path):
-        err.append(path)
+        err.add(path)
     else:
         for dirpath, dirnames, filenames in os.walk(path):
             out.update([os.path.join(dirpath, x) for x in filenames])
@@ -134,6 +142,7 @@ def __process_manifest(path:str, out:set[str], err:set[str]):
 
     with open(path, 'r') as f:
         for line in f:
+            line = line.strip()
             if os.path.isfile(line):
                 __process_file(line, out, err)
             elif os.path.isdir(line):
@@ -167,7 +176,7 @@ def __process_arg_set(arg_set:ArgSet):
     return files, err_files, err_directories
 
 
-def process_from_args(args, arg_map:dict[str, str]=None, fail_on_missing:bool=False):
+def process_from_args(args:tuple, arg_map:dict[str, str]=None, fail_on_missing:bool=False) -> set[str]:
 
     if arg_map is None:
         arg_map = dict(DEFAULT_ARG_MAP)
@@ -195,7 +204,7 @@ def process_from_args(args, arg_map:dict[str, str]=None, fail_on_missing:bool=Fa
     return process(include, exclude, fail_on_missing)
 
 
-def process(include, exclude, fail_on_missing:bool=False):
+def process(include:ArgSet, exclude:ArgSet, fail_on_missing:bool=False) -> set[str]:
 
     include_files, err_include_files, err_include_directories = __process_arg_set(include)
     exclude_files, err_exclude_files, err_exclude_directories = __process_arg_set(exclude)
@@ -213,4 +222,4 @@ def process(include, exclude, fail_on_missing:bool=False):
         exclude = __process_patterns(curr_matched, set(exclude.patterns))
         curr_matched = curr_matched - exclude
 
-    return list(curr_matched)
+    return curr_matched
