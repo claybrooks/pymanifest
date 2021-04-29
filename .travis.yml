@@ -8,7 +8,7 @@ python:
  - "3.9"
 
 script:
-  pytest
+  python -m unittest test/test.py
 
 install:
   pip install -r requirements.txt
