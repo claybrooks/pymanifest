@@ -76,11 +76,11 @@ class TestPyManifest(unittest.TestCase):
         pass
 
 
-    def __expand(self, path:str):
+    def __expand(self, path):
         return os.path.realpath(path)
 
 
-    def process(self, fail_on_missing:bool=False):
+    def process(self, fail_on_missing=False):
         return pymanifest.process(self.include, self.exclude, fail_on_missing)
 
 
