@@ -66,10 +66,12 @@ class TestPyManifest(unittest.TestCase):
         for folder in fail_folders:
             if os.path.isdir(folder):
                 logging.error("Incorrect test setup!  Folder should be non-existent {}".format(folder))
+                sys.exit(1)
 
         for file in fail_files:
             if os.path.isfile(file):
                 logging.error("Incorrect test setup!  File should be non-existent {}".format(file))
+                sys.exit(1)
 
 
     def tearDown(self):
